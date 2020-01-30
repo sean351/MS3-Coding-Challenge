@@ -1,0 +1,9 @@
+TODO
+
+Parse In CSV - DONE
+Parse into POJO - DONE
+Calculate Stats - DONE
+Export Stats LOG - DONE
+Import into Database - DONE
+Verify Records - DONE
+Export Bad Records CSV - WORKING

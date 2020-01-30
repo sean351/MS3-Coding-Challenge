@@ -70,10 +70,13 @@ public class SQLUtil {
             DatabaseMetaData md = conn.getMetaData();
             ResultSet rs = md.getTables(null, null, tableName, null);
             rs.last();
+
             return rs.getRow() > 0;
+
         } catch (SQLException ex) {
 
         }
+        disconnect();
         return false;
     }
 
@@ -87,12 +90,6 @@ public class SQLUtil {
     public void createTable(String tableName, String createSQL) {
         connect();
 
-        //DEBUG LINES
-        if (tableExists(tableName)) {
-
-            dropTable(tableName);
-        }
-
 
         try {
             statement = conn.createStatement();
@@ -105,7 +102,7 @@ public class SQLUtil {
             System.exit(0);
         }
 
-
+        disconnect();
     }
 
     /**
@@ -119,7 +116,8 @@ public class SQLUtil {
         try {
             statement = conn.createStatement();
             Boolean res = statement.execute("DROP TABLE " + dbName + "." + tableName);
-            System.out.println(res);
+
+            statement.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,6 +143,8 @@ public class SQLUtil {
                 preparedStatement.setString(i, tableContents.get(i));
             }
             preparedStatement.executeUpdate();
+            preparedStatement.close();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,6 +152,8 @@ public class SQLUtil {
             System.exit(0);
         }
 
+
+        disconnect();
     }
 
 
