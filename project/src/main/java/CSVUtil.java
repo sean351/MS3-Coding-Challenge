@@ -3,6 +3,7 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
 import java.io.*;
@@ -15,7 +16,7 @@ import java.util.logging.SimpleFormatter;
 public class CSVUtil {
 
 
-    private static String fileSplitBy = ",";
+    private static char fileSplitBy = ',';
     private static String fileContents = null;
     private static Map<String, String> badRecords = null;
 
@@ -33,6 +34,9 @@ public class CSVUtil {
         }
         return response;
     }
+
+
+
 
 
     public void importDB(String fileName, String fileType, String tableName, List<Map<String, String>> fileContents) {
@@ -117,6 +121,10 @@ public class CSVUtil {
     public void exportBadRecords(List<Map<String, String>> fileContents, String fileName) {
 
         try {
+
+
+
+
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName + "-bad.csv"));
             for (Map<String, String> map : fileContents) {
                 if (verifyRecord(fileContents) > 1) {
@@ -124,17 +132,12 @@ public class CSVUtil {
                     Iterator it = badRecords.entrySet().iterator();
                     while (it.hasNext()) {
                         Map.Entry pair = (Map.Entry) it.next();
-                        bufferedWriter.write(pair.getKey().toString());
-                        bufferedWriter.write(pair.getValue().toString());
+
 
 
 
                     }
-//                    List<List<String>> rows = Arrays.asList(
-//                            Arrays.asList(map.)
-//                    )
 
-                 //   bufferedWriter.write(map.get(0));
 
                 }
             }
