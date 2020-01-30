@@ -37,7 +37,7 @@ public class CSVRunner {
             csvUtil.verifyRecord(response);
 
             //Export the bad Records to a new CSV
-            //csvUtil.exportBadRecords(response, fileName);
+            csvUtil.exportBadRecords(response, fileName);
 
             //Export the stats to a log file
             csvUtil.exportStats(response, fileName);

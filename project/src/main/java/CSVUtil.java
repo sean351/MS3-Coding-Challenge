@@ -89,6 +89,7 @@ public class CSVUtil {
     public Integer verifyRecord(List<Map<String, String>> fileContents) {
         Boolean blankEntry = false;
         Integer counter = 0;
+        badRecords = new HashMap<String, String>();
         for (Map<String, String> map : fileContents) {
             blankEntry = map.containsValue("");
 
@@ -96,11 +97,11 @@ public class CSVUtil {
 
             if (blankEntry) {
                 counter++;
-//                for (Map.Entry<String, String> entry : map.entrySet()) {
-//                    String key = entry.getKey();
-//                    String value = entry.getValue();
-//                    badRecords.put(key, value);
-//                }
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    badRecords.put(key, value);
+                }
 
             }
         }
@@ -120,13 +121,20 @@ public class CSVUtil {
             for (Map<String, String> map : fileContents) {
                 if (verifyRecord(fileContents) > 1) {
 
-                    System.out.println(badRecords);
+                    Iterator it = badRecords.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry pair = (Map.Entry) it.next();
+                        bufferedWriter.write(pair.getKey().toString());
+                        bufferedWriter.write(pair.getValue().toString());
 
+
+
+                    }
 //                    List<List<String>> rows = Arrays.asList(
 //                            Arrays.asList(map.)
 //                    )
 
-                    bufferedWriter.write(map.get(0));
+                 //   bufferedWriter.write(map.get(0));
 
                 }
             }
