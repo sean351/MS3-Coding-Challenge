@@ -33,8 +33,8 @@ public class CSVUtil {
 
         try {
            response = readCSV("project/src/main/resources/" + fileName, fileType);
-          writeToFile(response);
-           // importDB(fileName,fileType,"DATA",response);
+         // writeToFile(response);
+            importDB(fileName,fileType,"DATA",response);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,21 +87,34 @@ public class CSVUtil {
     public static void importDB(String fileName, String fileType, String tableName, List<Map<String,String>> fileContents){
         SQLUtil sqlUtil = new SQLUtil();
         String sql = "INSERT INTO " + tableName + "(A,B,C,D,E,F,G,H,I,J) values (?,?,?,?,?,?,?,?,?,?)";
-        Map<Integer,String> updateValues = null;
+        HashMap<Integer,String> updateValues = new HashMap<Integer, String>();
+
+
         for(Map<String, String> map : fileContents) {
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                String key = entry.getKey();
+            Set set = map.entrySet();
 
-                String value = entry.getValue();
+           for
+
+            updateValues.put(1,map.get("A"));
+            updateValues.put(2,map.get("B"));
+            updateValues.put(3,map.get("C"));
+            updateValues.put(4,map.get("D"));
+            updateValues.put(5,map.get("E"));
+            updateValues.put(6,map.get("F"));
+            updateValues.put(7,map.get("G"));
+            updateValues.put(8,map.get("H"));
+            updateValues.put(9,map.get("I"));
+            updateValues.put(10,map.get("J"));
 
 
+           // sqlUtil.updateRecord(tableName,sql,updateValues);
 
-            }
         }
 
 
-        System.out.println(updateValues);
-     //  sqlUtil.updateRecord(tableName,sql,);
+
+
+
     }
 
 

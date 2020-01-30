@@ -135,7 +135,7 @@ public class SQLUtil {
      * @param updateSQL
      * @param tableContents
      */
-    public void updateRecord(String tableName, String updateSQL, Map<Integer, String> tableContents) {
+    public void updateRecord(String tableName, String updateSQL, HashMap<Integer, String> tableContents) {
         connect();
         try {
             preparedStatement = conn.prepareStatement(updateSQL);
