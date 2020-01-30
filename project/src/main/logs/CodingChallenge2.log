@@ -1,2 +1,6 @@
-Jan 30, 2020 12:33:51 PM CSVUtil exportStats
+Jan 30, 2020 1:13:06 PM CSVUtil exportStats
 INFO: Number of Total Records: 4
+Jan 30, 2020 1:13:06 PM CSVUtil exportStats
+INFO: Number of Bad Records: 3
+Jan 30, 2020 1:13:06 PM CSVUtil exportStats
+INFO: Number of Correct Records: 1

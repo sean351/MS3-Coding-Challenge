@@ -18,7 +18,7 @@ public class CSVUtil {
 
     private static char fileSplitBy = ',';
     private static String fileContents = null;
-    private static Map<String, String> badRecords = null;
+    private static HashMap<String, String> badRecords = null;
 
     public List<Map<String, String>> readCSV(String fileName, String fileType) throws JsonProcessingException, IOException {
         String correctFile = fileName + fileType;
@@ -34,9 +34,6 @@ public class CSVUtil {
         }
         return response;
     }
-
-
-
 
 
     public void importDB(String fileName, String fileType, String tableName, List<Map<String, String>> fileContents) {
@@ -119,34 +116,45 @@ public class CSVUtil {
      * Output a CSV File containing the Bad Records
      */
     public void exportBadRecords(List<Map<String, String>> fileContents, String fileName) {
-
         try {
 
 
-
-
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName + "-bad.csv"));
             for (Map<String, String> map : fileContents) {
-                if (verifyRecord(fileContents) > 1) {
-
-                    Iterator it = badRecords.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-
-
-
-
-                    }
-
-
+                Iterator it = badRecords.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry) it.next();
+                    System.out.println(pair.getKey() + " = " + pair.getValue());
+                    csvWriter(badRecords, new FileWriter(fileName + "-bad.csv"));
                 }
             }
-            bufferedWriter.close();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
+    }
+
+
+    public void csvWriter(Map<String, String> m, Writer writer) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, String> e : m.entrySet()) {
+            String key = e.getKey();
+            String value = e.getValue();
+
+            builder.append(key);
+            builder.append(',');
+            builder.append(value);
+            writer.write(builder.toString());
+
+        }
+
+
+
+
+
+        writer.close();
     }
 
     /**
