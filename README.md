@@ -29,10 +29,6 @@
 
 ## Step to run the application are below:
 
-- Download jar (From GitHub Releases Tab (WIP) )
-- Program will ask for following
-  - FileName
-  - FileType
 
 - You can then run program
 - It will update Database
