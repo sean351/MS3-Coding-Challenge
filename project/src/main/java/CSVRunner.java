@@ -44,7 +44,7 @@ public class CSVRunner {
             csvUtil.exportStats(response, fileName);
 
             //Import the data into the Database
-            //csvUtil.importDB(fileName, fileType, fileName, response);
+            csvUtil.importDB(fileName, fileType, fileName, response);
 
         } catch (IOException e) {
             e.printStackTrace();
