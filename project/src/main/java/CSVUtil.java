@@ -1,7 +1,10 @@
 
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -18,7 +21,106 @@ public class CSVUtil {
 
     private static char fileSplitBy = ',';
     private static String fileContents = null;
+    private static Integer badRecordsCount = 0;
     private static HashMap<String, String> badRecords = null;
+
+
+    @JsonPropertyOrder({"name", "age"})
+    class Data {
+        public String A;
+        public String B;
+        public String C;
+        public String D;
+        public String E;
+        public String F;
+        public String G;
+        public String H;
+        public String I;
+        public String J;
+
+        public Data() {
+        }
+
+        public String getA() {
+            return A;
+        }
+
+        public void setA(String a) {
+            A = a;
+        }
+
+        public String getB() {
+            return B;
+        }
+
+        public void setB(String b) {
+            B = b;
+        }
+
+        public String getC() {
+            return C;
+        }
+
+        public void setC(String c) {
+            C = c;
+        }
+
+        public String getD() {
+            return D;
+        }
+
+        public void setD(String d) {
+            D = d;
+        }
+
+        public String getE() {
+            return E;
+        }
+
+        public void setE(String e) {
+            E = e;
+        }
+
+        public String getF() {
+            return F;
+        }
+
+        public void setF(String f) {
+            F = f;
+        }
+
+        public String getG() {
+            return G;
+        }
+
+        public void setG(String g) {
+            G = g;
+        }
+
+        public String getH() {
+            return H;
+        }
+
+        public void setH(String h) {
+            H = h;
+        }
+
+        public String getI() {
+            return I;
+        }
+
+        public void setI(String i) {
+            I = i;
+        }
+
+        public String getJ() {
+            return J;
+        }
+
+        public void setJ(String j) {
+            J = j;
+        }
+    }
 
     public List<Map<String, String>> readCSV(String fileName, String fileType) throws JsonProcessingException, IOException {
         String correctFile = fileName + fileType;
@@ -29,8 +131,10 @@ public class CSVUtil {
         MappingIterator<Map<String, String>> iterator = mapper.reader(Map.class)
                 .with(schema)
                 .readValues(file);
+
         while (iterator.hasNext() && iterator != null) {
             response.add(iterator.next());
+
         }
         return response;
     }
@@ -83,69 +187,63 @@ public class CSVUtil {
     }
 
 
-    /**
-     * Check records to make sure they contain all needed information
-     * Return true if the record contains a blank entry
-     */
-    public Integer verifyRecord(List<Map<String, String>> fileContents) {
-        Boolean blankEntry = false;
-        Integer counter = 0;
-        badRecords = new HashMap<String, String>();
-        for (Map<String, String> map : fileContents) {
-            blankEntry = map.containsValue("");
 
-            Set headerSet = map.entrySet();
-
-            if (blankEntry) {
-                counter++;
-                for (Map.Entry<String, String> entry : map.entrySet()) {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    badRecords.put(key, value);
-                }
-
-            }
-        }
-
-
-        return counter;
-    }
 
 
     /**
      * Output a CSV File containing the Bad Records
      */
-    public void exportBadRecords(List<Map<String, String>> fileContents, String fileName) {
-        try {
+    public void exportBadRecords(List<Map<String, String>> fileContents, String fileName) throws IOException {
 
 
-            for (Map<String, String> map : fileContents) {
-                Iterator it = badRecords.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry) it.next();
-                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                    csvWriter(badRecords, new FileWriter(fileName + "-bad.csv"));
-                }
+        Map<String,String> outputMap = new HashMap<>();
+        String correctFile = fileName + "-bad.csv";
+        File file = new File(correctFile);
+
+
+
+
+        for (Map<String, String> map : fileContents) {
+
+
+
+            //Update Bad Records Count
+            if(map.values().contains("")) {
+                badRecordsCount++;
+                outputMap = map;
             }
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
+
+
+
+
+
+
+            int x = 0;
         }
-
-
+        csvWriter(outputMap,new FileWriter(file));
     }
 
 
+    /**
+     * Helper method for writing CSV files.
+     * @param m
+     * @param writer
+     * @throws IOException
+     */
     public void csvWriter(Map<String, String> m, Writer writer) throws IOException {
         StringBuilder builder = new StringBuilder();
+
         for (Map.Entry<String, String> e : m.entrySet()) {
             String key = e.getKey();
             String value = e.getValue();
 
-            builder.append(key);
+
+            //builder.append(key);
             builder.append(',');
             builder.append(value);
+          //  builder.append(System.getProperty("line.separator"));
             writer.write(builder.toString());
 
         }
@@ -157,13 +255,15 @@ public class CSVUtil {
         writer.close();
     }
 
+
+
     /**
      * Export a log file with the stats about the operation.
      */
     public void exportStats(List<Map<String, String>> fileContents, String fileName) {
         Integer totalRecords = fileContents.size();
         Integer correctRecords = 0;
-        Integer badRecords = verifyRecord(fileContents);
+        Integer badRecords = badRecordsCount;
 
 
         correctRecords = totalRecords - badRecords;

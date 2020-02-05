@@ -35,8 +35,7 @@ public class CSVRunner {
 
             // writeToFile(response);
 
-            //Verify the Record
-            csvUtil.verifyRecord(response);
+
 
             //Export the bad Records to a new CSV
             csvUtil.exportBadRecords(response, fileName);
